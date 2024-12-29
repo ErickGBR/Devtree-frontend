@@ -5,9 +5,17 @@ import ErrorMessage from "../components/ErrorMessage";
 
 export default function RegisterView() {
 
-    const { register, watch, handleSubmit, formState: { errors } } = useForm();
-
-    console.log(errors);
+    const initialValiues = {
+        name: '',
+        email: '',
+        handle: '',
+        password: '',
+        password_confirmation: ''
+    };
+    const { register, watch, handleSubmit, formState: { errors } } = useForm(
+        { defaultValues: initialValiues }
+    );
+    const password = watch('password');
 
     const handleRegister = async (data: any) => {
         console.log("desde handle register");
@@ -19,7 +27,7 @@ export default function RegisterView() {
 
 
             <form
-                onSubmit={ handleSubmit(handleRegister) }
+                onSubmit={handleSubmit(handleRegister)}
                 className="bg-white px-5 py-20 rounded-lg space-y-10 mt-10"
             >
                 <div className="grid grid-cols-1 space-y-3">
@@ -36,7 +44,7 @@ export default function RegisterView() {
                         )
                         }
                     />
-                    {errors.name &&  <ErrorMessage> { errors.name.message } </ErrorMessage>}
+                    {errors.name && <ErrorMessage> {errors.name.message} </ErrorMessage>}
                 </div>
                 <div className="grid grid-cols-1 space-y-3">
                     <label htmlFor="email" className="text-2xl text-slate-500">E-mail</label>
@@ -46,10 +54,16 @@ export default function RegisterView() {
                         placeholder="Email of register"
                         className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400"
                         {...register('email',
-                            { required: "email is mandatory " }
+                            {
+                                required: "email is mandatory ",
+                                pattern: {
+                                    value: /\S+@\S+\.\S+/,
+                                    message: "E-mail no válido",
+                                },
+                            }
                         )}
                     />
-                    {errors.email &&  <ErrorMessage> { errors.email.message } </ErrorMessage>}
+                    {errors.email && <ErrorMessage> {errors.email.message} </ErrorMessage>}
                 </div>
                 <div className="grid grid-cols-1 space-y-3">
                     <label htmlFor="handle" className="text-2xl text-slate-500">Handle</label>
@@ -62,7 +76,7 @@ export default function RegisterView() {
                             { required: "handle is mandatory " }
                         )}
                     />
-                    {errors.handle &&  <ErrorMessage> { errors.handle.message } </ErrorMessage>}
+                    {errors.handle && <ErrorMessage> {errors.handle.message} </ErrorMessage>}
                 </div>
                 <div className="grid grid-cols-1 space-y-3">
                     <label htmlFor="password" className="text-2xl text-slate-500">Password</label>
@@ -72,10 +86,16 @@ export default function RegisterView() {
                         placeholder="Password of register"
                         className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400"
                         {...register('password',
-                            { required: "password is mandatory " }
+                            {
+                                required: "password is mandatory ",
+                                minLength: {
+                                    value: 8,
+                                    message: "Password must have at least 8 characters"
+                                }
+                            }
                         )}
                     />
-                    {errors.password &&  <ErrorMessage> { errors.password.message } </ErrorMessage>}
+                    {errors.password && <ErrorMessage> {errors.password.message} </ErrorMessage>}
                 </div>
 
                 <div className="grid grid-cols-1 space-y-3">
@@ -86,10 +106,12 @@ export default function RegisterView() {
                         placeholder="Repeat password"
                         className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400"
                         {...register('password_confirmation',
-                            { required: "password_confirmation is mandatory " }
+                            { required: "password_confirmation is mandatory",
+                                validate: value => value === password || "The passwords do not match"
+                             }
                         )}
                     />
-                    {errors.password_confirmation &&  <ErrorMessage> { errors.password_confirmation.message } </ErrorMessage>}
+                    {errors.password_confirmation && <ErrorMessage> {errors.password_confirmation.message} </ErrorMessage>}
                 </div>
 
                 <input
