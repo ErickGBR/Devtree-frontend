@@ -2,8 +2,10 @@
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import ErrorMessage from "../components/ErrorMessage";
-import type  { Registerform } from "../types";
-import axios from "axios";
+import type { Registerform } from "../types";
+import axios, { isAxiosError } from "axios";
+import { toast } from "sonner";
+
 export default function RegisterView() {
 
     const initialValiues: Registerform = {
@@ -13,28 +15,26 @@ export default function RegisterView() {
         password: '',
         password_confirmation: ''
     };
-    const { register, watch, handleSubmit, formState: { errors } } = useForm(
+    const { register, watch, reset, handleSubmit, formState: { errors } } = useForm(
         { defaultValues: initialValiues }
     );
     const password = watch('password');
 
     const handleRegister = async (formData: Registerform) => {
-        console.log("desde handle register ", formData);
-
         try {
-            const response = await axios.post('http://localhost:4000/auth/register', formData)
-            console.log("response", response);
-            
+            const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/auth/register`, formData)
+            toast.success(data);
+            reset();
         } catch (error) {
-            console.log("error", error);
+            if (isAxiosError(error) && error.response) {
+                toast.error(error.response?.data.message);
+            }
         }
     }
 
     return (
         <div>
             <h1 className="text-4xl text-white font-bold">RegisterView</h1>
-
-
             <form
                 onSubmit={handleSubmit(handleRegister)}
                 className="bg-white px-5 py-20 rounded-lg space-y-10 mt-10"
@@ -115,9 +115,10 @@ export default function RegisterView() {
                         placeholder="Repeat password"
                         className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400"
                         {...register('password_confirmation',
-                            { required: "password_confirmation is mandatory",
+                            {
+                                required: "password_confirmation is mandatory",
                                 validate: value => value === password || "The passwords do not match"
-                             }
+                            }
                         )}
                     />
                     {errors.password_confirmation && <ErrorMessage> {errors.password_confirmation.message} </ErrorMessage>}
