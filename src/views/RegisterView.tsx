@@ -3,8 +3,9 @@ import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import ErrorMessage from "../components/ErrorMessage";
 import type { Registerform } from "../types";
-import axios, { isAxiosError } from "axios";
+import { isAxiosError } from "axios";
 import { toast } from "sonner";
+import api from "../config/axios";
 
 export default function RegisterView() {
 
@@ -15,14 +16,15 @@ export default function RegisterView() {
         password: '',
         password_confirmation: ''
     };
+    
     const { register, watch, reset, handleSubmit, formState: { errors } } = useForm(
         { defaultValues: initialValiues }
     );
-    const password = watch('password');
 
+    const password = watch('password');
     const handleRegister = async (formData: Registerform) => {
         try {
-            const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/auth/register`, formData)
+            const { data } = await api.post(`/auth/register`, formData)
             toast.success(data);
             reset();
         } catch (error) {
@@ -130,7 +132,6 @@ export default function RegisterView() {
                     value='Create account'
                 />
             </form>
-
 
             <nav className="mt-10">
                 <Link
