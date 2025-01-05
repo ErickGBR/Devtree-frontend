@@ -1,4 +1,5 @@
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, Navigate } from "react-router-dom";
+
 import { Toaster } from "sonner";
 import { useQuery } from "@tanstack/react-query";
 import { getUser } from "../api/DevTreeAPI";
@@ -22,7 +23,9 @@ export default function AppLayout() {
         refetchOnWindowFocus: false,
     })
 
-   console.log(data);
+    if (isLoading) return <p>Loading...</p>
+    if (isError) return <Navigate to="/auth/login" />
+    
     return (
         <>
             <header className="bg-slate-800 py-5">
