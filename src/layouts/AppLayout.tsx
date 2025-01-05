@@ -8,11 +8,21 @@ export default function AppLayout() {
 
     const { data, isLoading, error, isError } = useQuery({
         queryFn: getUser,
-        queryKey: ['user']
+        /**
+         * This option is used to cache the query identified by the key
+         */
+        queryKey: ['user'],
+        /**
+         * yoy can use this option to refetch the query a number of times
+         */
+        retry: 1,
+        /**
+         * This option is used to prevent the query from refetching when the window tab change not recharge
+         */
+        refetchOnWindowFocus: false,
     })
 
-    console.log(data);
-
+   console.log(data);
     return (
         <>
             <header className="bg-slate-800 py-5">

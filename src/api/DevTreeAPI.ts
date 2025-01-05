@@ -3,11 +3,16 @@ import api from "../config/axios";
 
 export async function getUser() {
     try {
-        const { data } = await api(`/user`)
-        localStorage.setItem('AUTH_TOKEN', data.token);
+        const getToken = localStorage.getItem('AUTH_TOKEN');
+        const { data } = await api(`/user`,{
+            headers: {
+                Authorization: `Bearer ${getToken}`
+            }
+        })
+        return data;
     } catch (error) {
         if (isAxiosError(error) && error.response) {
-            console.log(error.response?.data.message);
+            throw new Error(error.response?.data.error);
         }
     }
 }
