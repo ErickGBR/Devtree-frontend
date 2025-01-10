@@ -1,7 +1,9 @@
 import { useForm } from "react-hook-form"
-import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
 import ErrorMessage from "../components/ErrorMessage"
 import { ProfileForm, User } from "../types";
+import { updateProfile } from "../api/DevTreeAPI";
 
 export default function ProfileView() {
     const queryClient = useQueryClient();
@@ -14,9 +16,18 @@ export default function ProfileView() {
         }
     });
 
+    const updateProfileMutation = useMutation({
+        mutationFn: updateProfile,
+        onError: (error) => {
+            toast.error(error.message);
+        },
+        onSuccess: () => {
+            toast.success('Profile updated');
+        }
+    })
 
     const handleUserProfileForm = (formData: ProfileForm) => {
-        console.log('submit ---------------' , formData);
+        updateProfileMutation.mutate(formData);
     }
 
     return (
@@ -38,7 +49,6 @@ export default function ProfileView() {
                             required: 'The handle is required'
                         })
                     }
-                    value={data.handle}
 
                 />
                 {errors.handle && <ErrorMessage>{errors.handle.message}</ErrorMessage>}
@@ -56,7 +66,6 @@ export default function ProfileView() {
                             required: 'The description is required'
                         })
                     }
-                    value={data.description}
                 />
             </div>
 
