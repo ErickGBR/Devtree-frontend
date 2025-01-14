@@ -21,8 +21,9 @@ export default function ProfileView() {
         onError: (error) => {
             toast.error(error.message);
         },
-        onSuccess: () => {
-            toast.success('Profile updated');
+        onSuccess: (data) => {
+            toast.success(data);
+            queryClient.invalidateQueries(['user']);
         }
     })
 
