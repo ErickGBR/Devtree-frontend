@@ -3,7 +3,7 @@ import { toast } from "sonner";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import ErrorMessage from "../components/ErrorMessage"
 import { ProfileForm, User } from "../types";
-import { updateProfile } from "../api/DevTreeAPI";
+import { updateProfile, uploadImage } from "../api/DevTreeAPI";
 
 export default function ProfileView() {
     const queryClient = useQueryClient();
@@ -23,16 +23,35 @@ export default function ProfileView() {
         },
         onSuccess: (data) => {
             toast.success(data);
-            queryClient.invalidateQueries(['user']);
+            queryClient.invalidateQueries({ queryKey: ['user'] });
         }
     })
+
+
+    const uploadImageMutation = useMutation({
+        mutationFn: uploadImage,
+        onError: (error) => {
+            toast.error(error.message);
+        },
+        onSuccess: (data) => {
+            toast.success(data);
+            queryClient.invalidateQueries({ queryKey: ['user'] });
+        }
+    })
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files) {
+            uploadImageMutation.mutate(e.target.files[0]);
+
+        }
+    }
 
     const handleUserProfileForm = (formData: ProfileForm) => {
         updateProfileMutation.mutate(formData);
     }
 
     return (
-        <form 
+        <form
             className="bg-white p-10 rounded-lg space-y-5"
             onSubmit={handleSubmit(handleUserProfileForm)}
         >
@@ -46,9 +65,9 @@ export default function ProfileView() {
                     className="border-none bg-slate-100 rounded-lg p-2"
                     placeholder="handle o Nombre de Usuario"
                     {
-                        ...register('handle', {
-                            required: 'The handle is required'
-                        })
+                    ...register('handle', {
+                        required: 'The handle is required'
+                    })
                     }
 
                 />
@@ -63,9 +82,9 @@ export default function ProfileView() {
                     className="border-none bg-slate-100 rounded-lg p-2"
                     placeholder="Tu Descripción"
                     {
-                        ...register('description', {
-                            required: 'The description is required'
-                        })
+                    ...register('description', {
+                        required: 'The description is required'
+                    })
                     }
                 />
             </div>
@@ -80,7 +99,7 @@ export default function ProfileView() {
                     name="handle"
                     className="border-none bg-slate-100 rounded-lg p-2"
                     accept="image/*"
-                    onChange={ () => {} }
+                    onChange={handleChange}
                 />
             </div>
 
