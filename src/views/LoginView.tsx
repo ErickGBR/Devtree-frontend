@@ -30,7 +30,7 @@ export default function LoginView() {
             toast.success("Welcome back!");
         } catch (error) {
             if (isAxiosError(error) && error.response) {
-                toast.error(error.response?.data.message);
+                toast.error(error.response?.data);
             }
         }
     }
