@@ -1,12 +1,19 @@
 import { useState } from 'react';
 import { social } from '../data/social';
-export default function LinkTreeView() {
+import DevTreeInput from '../components/DevTreeInput';
 
+export default function LinkTreeView() {
     const [devTreelinks, setDevTreelinks] = useState(social);
-    
     return (
-        <div>
-            <h1>LinkTreeView</h1>
+        <div className="space-y-5">
+            {
+                devTreelinks.map(item => (
+                    <DevTreeInput
+                        key={item.name}
+                        item={item}
+                    />
+                ))
+            }
         </div>
     )
 }
