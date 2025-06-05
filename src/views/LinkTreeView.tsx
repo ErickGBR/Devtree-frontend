@@ -4,6 +4,10 @@ import DevTreeInput from '../components/DevTreeInput';
 
 export default function LinkTreeView() {
     const [devTreelinks, setDevTreelinks] = useState(social);
+
+    const handleUrlChange = ( e: React.ChangeEvent<HTMLInputElement>) => {
+        console.log('URL changed');
+    }
     return (
         <div className="space-y-5">
             {
@@ -11,6 +15,7 @@ export default function LinkTreeView() {
                     <DevTreeInput
                         key={item.name}
                         item={item}
+                        handleUrlChange={handleUrlChange}
                     />
                 ))
             }
