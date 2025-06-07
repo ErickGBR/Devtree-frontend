@@ -5,8 +5,13 @@ import DevTreeInput from '../components/DevTreeInput';
 export default function LinkTreeView() {
     const [devTreelinks, setDevTreelinks] = useState(social);
 
-    const handleUrlChange = ( e: React.ChangeEvent<HTMLInputElement>) => {
-        const updatedLinks = devTreelinks.map(link => link.name === e.target.name ? {...link, url: e.target.value} :link )
+    const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const updatedLinks = devTreelinks.map(link => link.name === e.target.name ? { ...link, url: e.target.value } : link)
+        setDevTreelinks(updatedLinks);
+    }
+
+    const handleEnableLink = (socialNetwork: string) => {
+        const updatedLinks = devTreelinks.map(link => link.name === socialNetwork ? { ...link, enabled: !link.enabled } : link);
         setDevTreelinks(updatedLinks);
     }
     return (
@@ -17,6 +22,7 @@ export default function LinkTreeView() {
                         key={item.name}
                         item={item}
                         handleUrlChange={handleUrlChange}
+                        handleEnableLink={handleEnableLink}
                     />
                 ))
             }
