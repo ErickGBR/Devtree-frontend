@@ -19,9 +19,10 @@ export default function DevTreeInput({ item, handleUrlChange, handleEnableLink }
             </div>
             <input
                 type="text"
+                className='flex-1 border border-gray-100 rounded-lg p-2'
                 onChange={handleUrlChange}
                 name={item?.name}
-                className='flex-1 border border-gray-100 rounded-lg p-2'
+                value={item?.url}
             />
 
             <Switch

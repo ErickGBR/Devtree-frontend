@@ -11,9 +11,9 @@ export default function LinkTreeView() {
     const [devTreelinks, setDevTreelinks] = useState(social);
     const queryClient = useQueryClient();
 
-   const user: User = queryClient.getQueryData(['user'])!;
+    const user: User = queryClient.getQueryData(['user'])!;
 
-   console.log('LinkTreeView user data', user.links);
+    console.log('LinkTreeView user data ------ ', JSON.parse(user.links));
     const { mutate } = useMutation({
         mutationFn: updateProfile,
         onSuccess: () => {
@@ -25,16 +25,16 @@ export default function LinkTreeView() {
     });
 
     useEffect(() => {
-        const updatedData = devTreelinks.map(link => {
-            const existingLink = user.links ? JSON.parse(user.links).find((l: { name: string }) => l.name === link.name) : null;
+        const updatedData = devTreelinks.map(item => {
+            const existingLink = JSON.parse(user.links).find((link => link.name === item.name));
             if (existingLink) {
                 return {
-                    ...link,
+                    ...item,
                     url: existingLink.url,
                     enabled: existingLink.enabled
                 };
             }
-            return link;
+            return item;
         });
         setDevTreelinks(updatedData);
     }, []);
@@ -42,20 +42,32 @@ export default function LinkTreeView() {
     const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const updatedLinks = devTreelinks.map(link => link.name === e.target.name ? { ...link, url: e.target.value } : link)
         setDevTreelinks(updatedLinks);
+        queryClient.setQueryData(['user'], (prevData: User) => {
+            if (prevData) {
+                return {
+                    ...prevData,
+                    links: JSON.stringify(updatedLinks)
+                }
+            }
+            return prevData;
+        }
+        );
     }
 
     const handleEnableLink = (socialNetwork: string) => {
         const updatedLinks = devTreelinks.map(link => {
             if (link.name === socialNetwork) {
-                if(isValidUrl(link.url) || link.url === '') {
+                if (isValidUrl(link.url) || link.url === '') {
                     return { ...link, enabled: !link.enabled };
-                }else {
+                } else {
                     toast.error(`Please enter a valid URL for ${link.name}`);
-                }  
+                }
             }
             return link;
         });
         setDevTreelinks(updatedLinks);
+
+        console.log('updatedLinks links to save db --------------', updatedLinks);
 
         queryClient.setQueryData(['user'], (prevData: User) => {
             if (prevData) {
@@ -81,9 +93,9 @@ export default function LinkTreeView() {
                     />
                 ))
             }
-            <button 
-            className="bg-cyan-400 p-2 text-lg w-full uppercase text-slate-600 rounded-lg font-bold"
-            onClick={() => mutate(user)}
+            <button
+                className="bg-cyan-400 p-2 text-lg w-full uppercase text-slate-600 rounded-lg font-bold"
+                onClick={() => mutate(user)}
             > Save</button>
         </div>
     )
