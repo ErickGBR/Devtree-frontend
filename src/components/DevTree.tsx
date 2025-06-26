@@ -2,14 +2,17 @@
 import { Link, Outlet } from "react-router-dom";
 import { Toaster } from "sonner";
 import NavigationTabs from "../components/NavigationsTab";
-import { User } from "../types";
+import { useState } from "react";
+import { SocialNetwork, User } from "../types";
 
 type DevTreeProps = {
     data: User;
 }
 
 export default function DevTree({ data }: DevTreeProps) {
-    console.log('DevTree data -----------------', data);
+    const [enableLinks, setEnableLinks] = useState<SocialNetwork[]>(JSON.parse(data.links).filter((link:SocialNetwork) => link.enabled));
+
+    console.log('DevTree data -----------------', enableLinks);
     return (
         <>
         <header className="bg-slate-800 py-5">
@@ -51,6 +54,27 @@ export default function DevTree({ data }: DevTreeProps) {
                         <img src={data.image} alt="image profile" className="mx-auto max-w-[250px]" />}
 
                         <p className="text-white text-center text-lg" > {data.description} </p>
+
+                            <div className="text-white mt-20 flex flex-col gap-5" >
+                            {
+                                enableLinks.map((link: SocialNetwork) => (
+                                    <a
+                                        key={link.name}
+                                        href={link.url}
+                                        target="_blank"
+                                        rel="noreferrer noopener"
+                                        className="flex items-center gap-3 text-lg hover:text-blue-400 transition-colors"
+                                    >
+                                        <img
+                                            src={`/social/icon_${link.name}.svg`}
+                                            alt={link.name}
+                                            className="w-8 h-8"
+                                        />
+                                        {link.name}
+                                    </a>
+                                ))
+                            }
+                            </div>
                     </div>
                 </div>
             </main>
