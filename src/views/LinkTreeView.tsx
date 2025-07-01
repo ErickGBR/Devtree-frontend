@@ -26,7 +26,7 @@ export default function LinkTreeView() {
 
     useEffect(() => {
         const updatedData = devTreelinks.map(item => {
-            const existingLink = JSON.parse(user.links).find((link => link.name === item.name));
+            const existingLink = JSON.parse(user.links).find((link: { name: string; url: string; enabled: boolean; }) => link.name === item.name);
             if (existingLink) {
                 return {
                     ...item,
@@ -79,7 +79,24 @@ export default function LinkTreeView() {
             }
             updatedItems = [...links, newItem];
         } else {
-            updatedItems = links.filter(link => link.name !== socialNetwork);
+            const indexToUpdate = links.findIndex(link => link.name === socialNetwork);
+
+            updatedItems = links.map(link => {
+                if (link.name === socialNetwork) {
+                    return { 
+                        ...link,
+                        id:0,
+                        enabled: false 
+                     };
+                }else if(link.id > 0){
+                    return { 
+                        ...link,
+                        id: link.id - 1 
+                    };
+                }else {
+                    return link;
+                }
+            });
         }
 
         queryClient.setQueryData(['user'], (prevData: User) => {
