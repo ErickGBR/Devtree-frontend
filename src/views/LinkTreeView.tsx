@@ -73,23 +73,20 @@ export default function LinkTreeView() {
         const selectedSocialNetworks = updatedLinks.find(link => link.name === socialNetwork);
 
         if (selectedSocialNetworks?.enabled) {
-            toast.error(`Please enter a valid URL for ${selectedSocialNetworks.name}`);
             const newItem = {
                 ...selectedSocialNetworks,
                 id: links.length + 1,
             }
             updatedItems = [...links, newItem];
-
         } else {
-
+            updatedItems = links.filter(link => link.name !== socialNetwork);
         }
-        console.log('updatedLinks links to save db --------------', updatedLinks);
 
         queryClient.setQueryData(['user'], (prevData: User) => {
             if (prevData) {
                 return {
                     ...prevData,
-                    links: JSON.stringify(updatedLinks)
+                    links: JSON.stringify(updatedItems)
                 }
             }
             return prevData;
