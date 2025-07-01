@@ -1,6 +1,8 @@
 
 import { Link, Outlet } from "react-router-dom";
 import { Toaster } from "sonner";
+import { DndContext, DragEndEvent, closestCenter } from '@dnd-kit/core';
+import { SortableContext, verticalListSortingStrategy, arrayMove } from '@dnd-kit/sortable';
 import NavigationTabs from "../components/NavigationsTab";
 import { useEffect, useState } from "react";
 import { SocialNetwork, User } from "../types";
@@ -20,6 +22,10 @@ export default function DevTree({ data }: DevTreeProps) {
     useEffect(() => {
         setEnableLinks(JSON.parse(data.links).filter((link: SocialNetwork) => link.enabled));
     }, [data]);
+
+    const handleDragEnd = () => {
+
+    }
 
     return (
         <>
@@ -63,16 +69,27 @@ export default function DevTree({ data }: DevTreeProps) {
 
                             <p className="text-white text-center text-lg" > {data.description} </p>
 
-                            <div className="text-white mt-20 flex flex-col gap-5" >
-                                {
-                                    enableLinks.map((link: SocialNetwork) => (
-                                        <DevTreeLink
-                                            key={link.name}
-                                            link={link}
-                                        />
-                                    ))
-                                }
-                            </div>
+                            <DndContext
+                                collisionDetection={closestCenter}
+                                onDragEnd={handleDragEnd}
+                            >
+                                <div className="text-white mt-20 flex flex-col gap-5" >
+                                    <SortableContext
+                                        items={enableLinks}
+                                        strategy={verticalListSortingStrategy}
+                                    >
+                                        {
+                                            enableLinks.map((link: SocialNetwork) => (
+                                                <DevTreeLink
+                                                    key={link.name}
+                                                    link={link}
+                                                />
+                                            ))
+                                        }
+                                    </SortableContext>
+
+                                </div>
+                            </DndContext>
                         </div>
                     </div>
                 </main>
