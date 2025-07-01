@@ -5,7 +5,7 @@ import { isValidUrl } from '../utils';
 import { toast } from 'sonner';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { updateProfile } from '../api/DevTreeAPI';
-import { User } from '../types';
+import { SocialNetwork, User } from '../types';
 
 export default function LinkTreeView() {
     const [devTreelinks, setDevTreelinks] = useState(social);
@@ -54,6 +54,8 @@ export default function LinkTreeView() {
         );
     }
 
+    const links: SocialNetwork[] = JSON.parse(user.links);
+
     const handleEnableLink = (socialNetwork: string) => {
         const updatedLinks = devTreelinks.map(link => {
             if (link.name === socialNetwork) {
@@ -67,6 +69,20 @@ export default function LinkTreeView() {
         });
         setDevTreelinks(updatedLinks);
 
+        let updatedItems: SocialNetwork[] = [];
+        const selectedSocialNetworks = updatedLinks.find(link => link.name === socialNetwork);
+
+        if (selectedSocialNetworks?.enabled) {
+            toast.error(`Please enter a valid URL for ${selectedSocialNetworks.name}`);
+            const newItem = {
+                ...selectedSocialNetworks,
+                id: links.length + 1,
+            }
+            updatedItems = [...links, newItem];
+
+        } else {
+
+        }
         console.log('updatedLinks links to save db --------------', updatedLinks);
 
         queryClient.setQueryData(['user'], (prevData: User) => {

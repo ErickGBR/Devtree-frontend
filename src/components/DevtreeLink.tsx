@@ -5,6 +5,11 @@ type DevTreeLinkProps = {
     link: SocialNetwork;
 }
 
+/** * DevTreeLink component to display a single social network link
+ * @param {DevTreeLinkProps} props - The properties for the DevTreeLink component
+ * @returns {JSX.Element} - The rendered DevTreeLink component
+ */
+
 export default function DevTreeLink({ link }: DevTreeLinkProps) {
     return (
         <li className="bg-white px-5 py-2 flex items-center gap-5 rounded-lg">

@@ -11,10 +11,12 @@ type DevTreeProps = {
 }
 
 export default function DevTree({ data }: DevTreeProps) {
+    // Initialize state to hold enabled social network links
     const [enableLinks, setEnableLinks] = useState<SocialNetwork[]>(JSON.parse(data.links).filter((link: SocialNetwork) => link.enabled));
 
     console.log('DevTree data -----------------', enableLinks);
 
+    // useEffect to set the enabled links based on the data passed
     useEffect(() => {
         setEnableLinks(JSON.parse(data.links).filter((link: SocialNetwork) => link.enabled));
     }, [data]);
