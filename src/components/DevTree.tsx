@@ -4,6 +4,7 @@ import { Toaster } from "sonner";
 import NavigationTabs from "../components/NavigationsTab";
 import { useState } from "react";
 import { SocialNetwork, User } from "../types";
+import DevTreeLink from "../components/DevtreeLink";
 
 type DevTreeProps = {
     data: User;
@@ -23,7 +24,7 @@ export default function DevTree({ data }: DevTreeProps) {
                 <div className="md:w-1/3 md:flex md:justify-end">
                     <button
                         className=" bg-lime-500 p-2 text-slate-800 uppercase font-black text-xs rounded-lg cursor-pointer"
-                        onClick={() => { }}
+                        onClick={() => {  }}
                     >
                         Logout
                     </button>
@@ -58,20 +59,10 @@ export default function DevTree({ data }: DevTreeProps) {
                             <div className="text-white mt-20 flex flex-col gap-5" >
                             {
                                 enableLinks.map((link: SocialNetwork) => (
-                                    <a
+                                    <DevTreeLink
                                         key={link.name}
-                                        href={link.url}
-                                        target="_blank"
-                                        rel="noreferrer noopener"
-                                        className="flex items-center gap-3 text-lg hover:text-blue-400 transition-colors"
-                                    >
-                                        <img
-                                            src={`/social/icon_${link.name}.svg`}
-                                            alt={link.name}
-                                            className="w-8 h-8"
-                                        />
-                                        {link.name}
-                                    </a>
+                                        link={link}
+                                    />
                                 ))
                             }
                             </div>
