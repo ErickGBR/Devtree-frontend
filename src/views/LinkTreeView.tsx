@@ -73,27 +73,42 @@ export default function LinkTreeView() {
         const selectedSocialNetworks = updatedLinks.find(link => link.name === socialNetwork);
 
         if (selectedSocialNetworks?.enabled) {
-            const newItem = {
-                ...selectedSocialNetworks,
-                id: links.length + 1,
+            const id = links.filter(link => link.id).length + 1;
+            if (links.some(link => link.name === socialNetwork)) {
+                updatedItems = links.map(link => {
+                    if (link.name === socialNetwork) {
+                        return {
+                            ...link,
+                            enabled: true,
+                            id
+                        };
+                    } else {
+                        return link;
+                    }
+                })
+            } else {
+                const newItem = {
+                    ...selectedSocialNetworks,
+                    id
+                }
+                updatedItems = [...links, newItem];
             }
-            updatedItems = [...links, newItem];
         } else {
             const indexToUpdate = links.findIndex(link => link.name === socialNetwork);
 
             updatedItems = links.map(link => {
                 if (link.name === socialNetwork) {
-                    return { 
+                    return {
                         ...link,
-                        id:0,
-                        enabled: false 
-                     };
-                }else if(link.id > 0){
-                    return { 
-                        ...link,
-                        id: link.id - 1 
+                        id: 0,
+                        enabled: false
                     };
-                }else {
+                } else if (link.id > indexToUpdate) {
+                    return {
+                        ...link,
+                        id: link.id - 1
+                    };
+                } else {
                     return link;
                 }
             });
