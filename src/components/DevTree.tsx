@@ -7,6 +7,7 @@ import NavigationTabs from "../components/NavigationsTab";
 import { useEffect, useState } from "react";
 import { SocialNetwork, User } from "../types";
 import DevTreeLink from "../components/DevtreeLink";
+import { useQueryClient } from "@tanstack/react-query";
 
 type DevTreeProps = {
     data: User;
@@ -16,21 +17,42 @@ export default function DevTree({ data }: DevTreeProps) {
     // Initialize state to hold enabled social network links
     const [enableLinks, setEnableLinks] = useState<SocialNetwork[]>(JSON.parse(data.links).filter((link: SocialNetwork) => link.enabled));
 
-    console.log('DevTree data -----------------', enableLinks);
-
     // useEffect to set the enabled links based on the data passed
     useEffect(() => {
         setEnableLinks(JSON.parse(data.links).filter((link: SocialNetwork) => link.enabled));
     }, [data]);
 
+    const queryClient = useQueryClient();
     const handleDragEnd = (e: DragEndEvent) => {
         const { active, over } = e;
         if (active.id !== over?.id) {
+            /**
+             * Get the previous and new index of the dragged item
+             */
             const prevIndex = enableLinks.findIndex(link => link.id === active.id);
             const newIndex = enableLinks.findIndex(link => link.id === over?.id);
 
+
+            const disabledLinks: SocialNetwork[] = JSON.parse(data.links).filter((link: SocialNetwork) => !link.enabled);
+            /**
+             * Reorder the enabled links
+             */
             const order = arrayMove(enableLinks, prevIndex, newIndex);
             setEnableLinks(order);
+
+            const Links = order.concat(disabledLinks);
+
+            /**
+             * Update the user data in the query client
+             * with the new links order
+             */
+
+            queryClient.setQueryData(['user'], (prevData: User | undefined) => {
+                return {
+                    ...prevData,
+                    links: JSON.stringify(Links)
+                };
+            });
         }
 
     }
