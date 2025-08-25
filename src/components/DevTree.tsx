@@ -23,7 +23,15 @@ export default function DevTree({ data }: DevTreeProps) {
         setEnableLinks(JSON.parse(data.links).filter((link: SocialNetwork) => link.enabled));
     }, [data]);
 
-    const handleDragEnd = () => {
+    const handleDragEnd = (e: DragEndEvent) => {
+        const { active, over } = e;
+        if (active.id !== over?.id) {
+            const prevIndex = enableLinks.findIndex(link => link.id === active.id);
+            const newIndex = enableLinks.findIndex(link => link.id === over?.id);
+
+            const order = arrayMove(enableLinks, prevIndex, newIndex);
+            setEnableLinks(order);
+        }
 
     }
 
