@@ -12,8 +12,6 @@ export default function LinkTreeView() {
     const queryClient = useQueryClient();
 
     const user: User = queryClient.getQueryData(['user'])!;
-
-    console.log('LinkTreeView user data ------ ', JSON.parse(user.links));
     const { mutate } = useMutation({
         mutationFn: updateProfile,
         onSuccess: () => {
@@ -103,7 +101,7 @@ export default function LinkTreeView() {
                         id: 0,
                         enabled: false
                     };
-                } else if (link.id > indexToUpdate) {
+                } else if (link.id > indexToUpdate && (indexToUpdate !== 0 && link.id === 1)) {
                     return {
                         ...link,
                         id: link.id - 1
