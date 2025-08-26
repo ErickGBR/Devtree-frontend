@@ -27,6 +27,10 @@ export default function Router() {
                     <Route element={<HandleView />} index={true} />
                 </Route>
 
+                <Route path="/404" element={<AuthLayout />} >
+                    <Route element={<HandleView />} index={true} />
+                </Route>
+
             </Routes>
         </BrowserRouter>
     );
