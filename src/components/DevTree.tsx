@@ -81,11 +81,12 @@ export default function DevTree({ data }: DevTreeProps) {
                     <div className="flex justify-end">
                         <Link
                             className="font-bold text-right text-slate-800 text-2xl"
-                            to={''}
+                            to={`/${data.handle}`}
                             target="_blank"
                             rel="noreferrer noopener"
                         > View my profile : /{data.handle}</Link>
                     </div>
+
 
                     <div className="flex flex-col md:flex-row gap-10 mt-10">
                         <div className="flex-1 ">

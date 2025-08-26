@@ -4,6 +4,7 @@ import LoginView from "./views/LoginView";
 import RegisterView from "./views/RegisterView";
 import LinkTreeView from "./views/LinkTreeView";
 import ProfileView from "./views/ProfileView";
+import HandleView from "./views/HandleView";
 
 import AuthLayout from "./layouts/AuthLayout";
 import AppLayout from "./layouts/AppLayout";
@@ -16,11 +17,16 @@ export default function Router() {
                     <Route path="/auth/login" element={<LoginView />} />
                     <Route path="/auth/register" element={<RegisterView />} />
                 </Route>
-                
-                <Route path="/admin" element={<AppLayout/> } >
-                    <Route index={true} element={<LinkTreeView/>} />
-                    <Route path="profile" element={<ProfileView/>} />
+
+                <Route path="/admin" element={<AppLayout />} >
+                    <Route index={true} element={<LinkTreeView />} />
+                    <Route path="profile" element={<ProfileView />} />
                 </Route>
+
+                <Route path="/:handle" element={<AuthLayout />} >
+                    <Route element={<HandleView />} index={true} />
+                </Route>
+
             </Routes>
         </BrowserRouter>
     );
