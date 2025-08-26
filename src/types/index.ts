@@ -8,6 +8,8 @@ export type User = {
     links: string; // JSON string of SocialNetwork[]
 }
 
+export type UserHandle = Pick<User, 'description' | 'handle' | 'name' | 'image' | 'links'>;
+
 export type Registerform = Pick<User, 'handle' | 'name' | 'email'> & {
     password: string;
     password_confirmation: string;
