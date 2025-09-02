@@ -5,6 +5,11 @@ type HandleDataProps = {
     data: UserHandle;
 }
 
+/**
+ * Show user handle data
+ * @param data UserHandle data need destructure properties form json format type HandleDataProps
+ * @returns JSX.Element
+ */
 export default function HandleData({ data }: HandleDataProps) {
 
     const links: SocialNetwork[] = JSON.parse(data.links).filter((link: SocialNetwork) => link.url);
@@ -16,6 +21,11 @@ export default function HandleData({ data }: HandleDataProps) {
             <p className='text-lg text-center font-bold'> {data.description} </p>
             <div className='mt-20 flex flex-col gap-6'>
                 {links.length > 0 ?
+                /**
+                 * Show user social network links
+                 * @param links Array of social network links
+                 * @returns JSX.Element
+                 */
                     links.map((link) => (
                         <a 
                         key={link.name} 
