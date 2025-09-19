@@ -1,4 +1,5 @@
 import Header from "../components/Header";
+import SearchForm from "./searchForm";
 
 function HomeView() {
     return (
@@ -15,6 +16,7 @@ function HomeView() {
                             Join thousands of users who are using DevTree to share their social networks, share you
                             profile of Tiktok, Instagram, Twitter, Linkedin, Facebook, Youtube, Github and more.
                         </p>
+                        <SearchForm />
                     </div>
                 </div>
             </main>
