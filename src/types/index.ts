@@ -29,3 +29,8 @@ export type SocialNetwork = {
 }
 
 export type DevTreeLink = Pick<SocialNetwork, 'name' | 'url' | 'enabled'>
+
+export type SearchType = {
+    message: string;
+    status?: boolean;
+}

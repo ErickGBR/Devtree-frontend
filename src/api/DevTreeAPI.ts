@@ -1,6 +1,6 @@
 import { isAxiosError} from "axios";
 import api from "../config/axios";
-import { ProfileForm, User } from "../types";
+import { User, SearchType } from "../types";
 
 export async function getUser() {
     try {
@@ -44,6 +44,18 @@ export async function getUserByHandle(handle: string) {
     try {
         const { data } = await api.get(`/${handle}`);
         return data;
+    } catch (error) {
+        if (isAxiosError(error) && error.response) {
+            throw new Error(error.response?.data.error);
+        }
+    }
+}
+
+
+export async function searchUserByHandle(handle: string) {
+    try {
+        const { data } = await api.post<SearchType>(`/search`, { handle });
+        return data.message
     } catch (error) {
         if (isAxiosError(error) && error.response) {
             throw new Error(error.response?.data.error);

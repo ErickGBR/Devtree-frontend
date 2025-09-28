@@ -1,5 +1,5 @@
 import Header from "../components/Header";
-import SearchForm from "./searchForm";
+import SearchForm from "../components/searchForm";
 
 function HomeView() {
     return (
