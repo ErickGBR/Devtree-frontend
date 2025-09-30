@@ -4,7 +4,7 @@ important note:
     - implement the login view as you see fit with Link from the react-router-dom to interact in the same page
 */
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import type { LoginForm } from "../types";
 import ErrorMessage from "../components/ErrorMessage";
@@ -13,6 +13,8 @@ import { toast } from "sonner";
 import api from "../config/axios";
 
 export default function LoginView() {
+
+    const navigate = useNavigate()
 
     const initialValiues: LoginForm = {
         email: '',
@@ -27,7 +29,7 @@ export default function LoginView() {
         try {
             const { data } = await api.post(`/auth/login`, formData)
             localStorage.setItem('AUTH_TOKEN', data);
-            toast.success("Welcome back!");
+            navigate('/admin')
         } catch (error) {
             if (isAxiosError(error) && error.response) {
                 toast.error(error.response?.data);
