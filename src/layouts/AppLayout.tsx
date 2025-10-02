@@ -5,7 +5,7 @@ import DevTree from "../components/DevTree";
 
 export default function AppLayout() {
 
-    const { data, isLoading, error, isError } = useQuery({
+    const { data, isLoading, isError } = useQuery({
         queryFn: getUser,
         /**
          * This option is used to cache the query identified by the key
