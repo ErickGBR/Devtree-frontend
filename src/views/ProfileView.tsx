@@ -1,7 +1,7 @@
-import { useForm } from "react-hook-form"
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
-import ErrorMessage from "../components/ErrorMessage"
+import ErrorMessage from "../components/ErrorMessage";
 import { ProfileForm, User } from "../types";
 import { updateProfile, uploadImage } from "../api/DevTreeAPI";
 
@@ -121,5 +121,5 @@ export default function ProfileView() {
                 value='Save Changes'
             />
         </form>
-    )
+    );
 }

@@ -114,5 +114,5 @@ export default function DevTree({ data }: DevTreeProps) {
             </div>
             <Toaster position="top-right" />
         </>
-    )
+    );
 }

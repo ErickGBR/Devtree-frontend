@@ -1,4 +1,4 @@
-import { isAxiosError} from "axios";
+import { isAxiosError } from "axios";
 import api from "../config/axios";
 import { User, SearchType } from "../types";
 
@@ -16,7 +16,7 @@ export async function getUser() {
 
 export async function updateProfile(updateProfile: User) {
     try {
-        const { data } = await api.patch<String>(`/user`, updateProfile)
+        const { data } = await api.patch<string>(`/user`, updateProfile);
         return data;
     } catch (error) {
         if (isAxiosError(error) && error.response) {

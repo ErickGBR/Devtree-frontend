@@ -28,10 +28,10 @@ export default function Router() {
                     <Route element={<HandleView />} index={true} />
                 </Route>
 
-                <Route path="/" element={<HomeView />} /> 
-                    <Route path="/404" element={<AuthLayout />} >
-                        <Route element={<NotFoundView />} index={true} />
-                    </Route>
+                <Route path="/" element={<HomeView />} />
+                <Route path="/404" element={<AuthLayout />}>
+                    <Route element={<NotFoundView />} index={true} />
+                </Route>
 
             </Routes>
         </BrowserRouter>

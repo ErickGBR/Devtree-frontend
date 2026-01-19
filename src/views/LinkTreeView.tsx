@@ -23,7 +23,7 @@ export default function LinkTreeView() {
     });
 
     useEffect(() => {
-        const updatedData = devTreelinks.map(item => {
+        const updatedData = social.map(item => {
             const existingLink = JSON.parse(user.links).find((link: { name: string; url: string; enabled: boolean; }) => link.name === item.name);
             if (existingLink) {
                 return {
@@ -35,7 +35,7 @@ export default function LinkTreeView() {
             return item;
         });
         setDevTreelinks(updatedData);
-    }, []);
+    }, [user.links]);
 
     const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const updatedLinks = devTreelinks.map(link => link.name === e.target.name ? { ...link, url: e.target.value } : link)
@@ -141,5 +141,5 @@ export default function LinkTreeView() {
                 onClick={() => mutate(user)}
             > Save</button>
         </div>
-    )
+    );
 }

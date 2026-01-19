@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import slugify from "react-slugify" 
+import slugify from "react-slugify";
 import ErrorMessage from "./ErrorMessage";
 import { useMutation } from "@tanstack/react-query";
 import { searchUserByHandle } from "../api/DevTreeAPI";
