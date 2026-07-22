@@ -10,7 +10,7 @@ export default {
         'home': "url('/bg.svg')",
       },
       backgroundSize: {
-        'home-xl': '5s0%',
+        'home-xl': '50%',
       },
     },
   },

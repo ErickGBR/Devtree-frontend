@@ -34,7 +34,7 @@ export default function ProfileView() {
             toast.error(error.message);
         },
         onSuccess: (data) => {
-            toast.success(data);
+            toast.success('Image uploaded successfully');
             queryClient.setQueryData(['user'], (prevData: User) => {
                 if (prevData) {
                     return {
@@ -56,10 +56,9 @@ export default function ProfileView() {
     }
 
     const handleUserProfileForm = (formData: ProfileForm) => {
-        const user: User = queryClient.getQueryData(['user'])!;
-        user.description = formData.description;
-        user.handle = formData.handle;
-        updateProfileMutation.mutate(user);
+        const user = queryClient.getQueryData<User>(['user']);
+        if (!user) return;
+        updateProfileMutation.mutate({ ...user, description: formData.description, handle: formData.handle });
     }
 
     return (

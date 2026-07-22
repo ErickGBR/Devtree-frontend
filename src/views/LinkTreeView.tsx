@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { social } from '../data/social';
 import DevTreeInput from '../components/DevTreeInput';
-import { isValidUrl } from '../utils';
+import { isValidUrl, parseLinks } from '../utils';
 import { toast } from 'sonner';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { updateProfile } from '../api/DevTreeAPI';
@@ -24,7 +24,7 @@ export default function LinkTreeView() {
 
     useEffect(() => {
         const updatedData = social.map(item => {
-            const existingLink = JSON.parse(user.links).find((link: { name: string; url: string; enabled: boolean; }) => link.name === item.name);
+            const existingLink = parseLinks(user.links).find((link: { name: string; url: string; enabled: boolean; }) => link.name === item.name);
             if (existingLink) {
                 return {
                     ...item,
@@ -52,7 +52,7 @@ export default function LinkTreeView() {
         );
     }
 
-    const links: SocialNetwork[] = JSON.parse(user.links);
+    const links: SocialNetwork[] = parseLinks(user.links);
 
     const handleEnableLink = (socialNetwork: string) => {
         const updatedLinks = devTreelinks.map(link => {
@@ -71,7 +71,7 @@ export default function LinkTreeView() {
         const selectedSocialNetworks = updatedLinks.find(link => link.name === socialNetwork);
 
         if (selectedSocialNetworks?.enabled) {
-            const id = links.filter(link => link.id).length + 1;
+            const id = links.length > 0 ? Math.max(...links.map(l => l.id), 0) + 1 : 1;
             if (links.some(link => link.name === socialNetwork)) {
                 updatedItems = links.map(link => {
                     if (link.name === socialNetwork) {
@@ -101,7 +101,7 @@ export default function LinkTreeView() {
                         id: 0,
                         enabled: false
                     };
-                } else if (link.id > indexToUpdate && (indexToUpdate !== 0 && link.id === 1)) {
+                } else if (link.id > indexToUpdate) {
                     return {
                         ...link,
                         id: link.id - 1
