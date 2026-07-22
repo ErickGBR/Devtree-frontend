@@ -9,6 +9,7 @@ import { SocialNetwork, User } from "../types";
 import DevTreeLink from "../components/DevtreeLink";
 import { useQueryClient } from "@tanstack/react-query";
 import Header from "./Header";
+import { parseLinks } from "../utils";
 
 type DevTreeProps = {
     data: User;
@@ -16,11 +17,13 @@ type DevTreeProps = {
 
 export default function DevTree({ data }: DevTreeProps) {
     // Initialize state to hold enabled social network links
-    const [enableLinks, setEnableLinks] = useState<SocialNetwork[]>(JSON.parse(data.links).filter((link: SocialNetwork) => link.enabled));
+    const [enableLinks, setEnableLinks] = useState<SocialNetwork[]>(() =>
+        parseLinks(data.links).filter((link: SocialNetwork) => link.enabled)
+    );
 
-    // useEffect to set the enabled links based on the data passed
+    // useEffect to sync enabled links when data changes
     useEffect(() => {
-        setEnableLinks(JSON.parse(data.links).filter((link: SocialNetwork) => link.enabled));
+        setEnableLinks(parseLinks(data.links).filter((link: SocialNetwork) => link.enabled));
     }, [data]);
 
     const queryClient = useQueryClient();
@@ -34,7 +37,7 @@ export default function DevTree({ data }: DevTreeProps) {
             const newIndex = enableLinks.findIndex(link => link.id === over?.id);
 
 
-            const disabledLinks: SocialNetwork[] = JSON.parse(data.links).filter((link: SocialNetwork) => !link.enabled);
+            const disabledLinks: SocialNetwork[] = parseLinks(data.links).filter((link: SocialNetwork) => !link.enabled);
             /**
              * Reorder the enabled links
              */

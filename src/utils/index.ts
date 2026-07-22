@@ -1,21 +1,20 @@
-/**
- * validate if a string is a valid URL
- * @param classes 
- * @returns {string}
- * @description This function takes an array of class names and returns a string of class names separated by spaces.
- * It filters out any falsy values (like empty strings or null) before joining them.
- */
+import { SocialNetwork } from '../types';
 
+export const AUTH_TOKEN_KEY = 'AUTH_TOKEN';
+
+/**
+ * Combines class names, filtering out falsy values
+ * @param classes - Array of class name strings
+ * @returns Joined class names string
+ */
 export function classNames(...classes : string[]) {
     return classes.filter(Boolean).join(' ')
 }
 
 /**
- * validate if a string is a valid URL
- * @param url 
+ * Validate if a string is a valid URL
+ * @param url - The URL string to validate
  * @returns {boolean}
- * @description This function checks if the provided string is a valid URL by attempting to create a new URL object.
- * If the URL is valid, it returns true; otherwise, it returns false.
  */
 export function isValidUrl(url: string): boolean {
     try {
@@ -23,5 +22,18 @@ export function isValidUrl(url: string): boolean {
         return true;
     } catch {
         return false;
+    }
+}
+
+/**
+ * Safely parse a JSON string into a SocialNetwork array
+ * @param json - The JSON string to parse
+ * @returns Array of SocialNetwork objects, empty array on failure
+ */
+export function parseLinks(json: string): SocialNetwork[] {
+    try {
+        return JSON.parse(json);
+    } catch {
+        return [];
     }
 }

@@ -1,5 +1,6 @@
 
 import { UserHandle, SocialNetwork } from '../types';
+import { parseLinks } from '../utils';
 
 type HandleDataProps = {
     data: UserHandle;
@@ -12,10 +13,10 @@ type HandleDataProps = {
  */
 export default function HandleData({ data }: HandleDataProps) {
 
-    const links: SocialNetwork[] = JSON.parse(data.links).filter((link: SocialNetwork) => link.url);
+    const links: SocialNetwork[] = parseLinks(data.links).filter((link: SocialNetwork) => link.url);
     return (
         <div className='space-y-6 text-white'>
-            <p className='text-5xl text-center font-back'> {data.handle} </p>
+            <p className='text-5xl text-center font-black'> {data.handle} </p>
             {data.image &&
                 <img src={data.image} alt="image profile" className="mx-auto max-w-[250px]" />}
             <p className='text-lg text-center font-bold'> {data.description} </p>

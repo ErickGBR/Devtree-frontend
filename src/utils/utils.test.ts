@@ -7,11 +7,11 @@ describe('classNames', () => {
   });
 
   it('should filter out falsy values', () => {
-    expect(classNames('foo', '', 'bar', null, 'baz')).toBe('foo bar baz');
+    expect(classNames('foo', '', 'bar', 'baz')).toBe('foo bar baz');
   });
 
   it('should return empty string when no classes', () => {
-    expect(classNames('', null)).toBe('');
+    expect(classNames('', '')).toBe('');
   });
 
   it('should handle single class', () => {
