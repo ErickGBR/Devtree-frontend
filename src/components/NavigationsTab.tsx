@@ -1,14 +1,11 @@
 import { BookmarkSquareIcon, UserIcon } from '@heroicons/react/20/solid';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { classNames } from '../utils';
 
 const tabs = [
     { name: 'Links', href: '/admin', icon: BookmarkSquareIcon },
     { name: 'My Profile' , href: '/admin/profile', icon: UserIcon },
 ]
-
-function classNames(...classes: string[]) {
-    return classes.filter(Boolean).join(' ')
-}
 
 export default function NavigationTabs() {
     const location = useLocation()

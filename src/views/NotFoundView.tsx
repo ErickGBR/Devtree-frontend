@@ -1,19 +1,14 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 
-const NotFoundView: React.FC = () => (
-    <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '100vh',
-        textAlign: 'center'
-    }}>
-        <h1 style={{ fontSize: '6rem', margin: 0 }}>404</h1>
-        <h2>Page Not Found</h2>
-        <p>The page you are looking for does not exist.</p>
-        <Link to="/" style={{ marginTop: '1rem', color: '#1976d2', textDecoration: 'underline' }}>
+const NotFoundView = () => (
+    <div className="flex flex-col items-center justify-center h-screen text-center p-8">
+        <h1 className="text-6xl font-black text-white mb-4">404</h1>
+        <h2 className="text-2xl font-bold text-gray-300 mb-2">Page Not Found</h2>
+        <p className="text-gray-400 mb-6">The page you are looking for does not exist.</p>
+        <Link
+            to="/"
+            className="text-cyan-400 hover:text-cyan-300 underline transition-colors"
+        >
             Go to Home
         </Link>
     </div>

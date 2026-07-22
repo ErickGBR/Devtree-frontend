@@ -4,7 +4,7 @@ import { classNames } from '../utils';
 
 type DevTreeInputProps = {
     item?: DevTreeLink;
-    handleUrlChange: (e: React.ChangeEvent<HTMLInputElement>) => void | string;
+    handleUrlChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     handleEnableLink: (name: string) => void;
 }
 
