@@ -1,15 +1,11 @@
 
-import { useQueryClient } from "@tanstack/react-query";
+import { AUTH_TOKEN_KEY } from '../../utils';
 
 
 function AdminNavigation() {
 
-    const queryClient = useQueryClient();
-
-
     const logout = async () => {
-        localStorage.removeItem("AUTH_TOKEN");
-        queryClient.invalidateQueries({ queryKey: ['user'] });
+        localStorage.removeItem(AUTH_TOKEN_KEY);
         window.location.reload();
     };
 

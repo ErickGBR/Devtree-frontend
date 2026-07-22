@@ -11,6 +11,7 @@ import ErrorMessage from "../components/ErrorMessage";
 import { isAxiosError } from "axios";
 import { toast } from "sonner";
 import api from "../config/axios";
+import { AUTH_TOKEN_KEY } from "../utils";
 
 export default function LoginView() {
 
@@ -28,11 +29,16 @@ export default function LoginView() {
     const handleLogin = async (formData: LoginForm) => {
         try {
             const { data } = await api.post(`/auth/login`, formData)
-            localStorage.setItem('AUTH_TOKEN', data);
+            localStorage.setItem(AUTH_TOKEN_KEY, data);
             navigate('/admin')
         } catch (error) {
-            if (isAxiosError(error) && error.response) {
-                toast.error(error.response?.data);
+            if (isAxiosError(error) && error.response?.data) {
+                const message = typeof error.response.data === 'string'
+                    ? error.response.data
+                    : error.response.data?.message || error.response.data?.error || 'Login failed';
+                toast.error(message);
+            } else {
+                toast.error('An unexpected error occurred');
             }
         }
     }
